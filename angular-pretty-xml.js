@@ -1,36 +1,72 @@
-// credits to https://gist.github.com/sente/1083506
+// credits to vkbeautify (https://code.google.com/p/vkbeautify/)
 angular.module('prettyXml', [])
     .filter('prettyXml', function () {
-        return function (xml) {
-            var formatted = '';
-            var reg = /(>)(<)(\/*)/g;
-            xml = xml.replace(reg, '$1\r\n$2$3');
-            var pad = 0;
-            angular.forEach(
-                xml.split('\r\n'),
-                function (node) {
-                    var indent = 0;
-                    if (node.match(/.+<\/\w[^>]*>$/)) {
-                        indent = 0;
-                    } else if (node.match(/^<\/\w/)) {
-                        if (pad != 0) {
-                            pad -= 1;
-                        }
-                    } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
-                        indent = 1;
-                    } else {
-                        indent = 0;
+        return function (xml, indent) {
+            if(indent !== 0)
+                indent = indent || 2;
+
+            var ar = xml.replace(/>\s{0,}</g,"><")
+                    .replace(/</g,"~::~<")
+                    .replace(/\s*xmlns\:/g,"~::~xmlns:")
+                    .replace(/\s*xmlns\=/g,"~::~xmlns=")
+                    .split('~::~'),
+                len = ar.length,
+                inComment = false,
+                deep = 0,
+                str = '',
+                shift = createShiftArr(indent);
+
+            for(ix=0;ix<len;ix++) {
+                // start comment or <![CDATA[...]]> or <!DOCTYPE //
+                if(ar[ix].search(/<!/) > -1) {
+                    str += shift[deep]+ar[ix];
+                    inComment = true;
+                    // end comment  or <![CDATA[...]]> //
+                    if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1 || ar[ix].search(/!DOCTYPE/) > -1 ) {
+                        inComment = false;
                     }
+                } else
+                // end comment  or <![CDATA[...]]> //
+                if(ar[ix].search(/-->/) > -1 || ar[ix].search(/\]>/) > -1) {
+                    str += ar[ix];
+                    inComment = false;
+                } else
+                // <elm></elm> //
+                if( /^<\w/.exec(ar[ix-1]) && /^<\/\w/.exec(ar[ix]) &&
+                    /^<[\w:\-\.\,]+/.exec(ar[ix-1]) == /^<\/[\w:\-\.\,]+/.exec(ar[ix])[0].replace('/','')) {
+                    str += ar[ix];
+                    if(!inComment) deep--;
+                } else
+                // <elm> //
+                if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) == -1 && ar[ix].search(/\/>/) == -1 ) {
+                    str = !inComment ? str += shift[deep++]+ar[ix] : str += ar[ix];
+                } else
+                // <elm>...</elm> //
+                if(ar[ix].search(/<\w/) > -1 && ar[ix].search(/<\//) > -1) {
+                    str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
+                } else
+                // </elm> //
+                if(ar[ix].search(/<\//) > -1) {
+                    str = !inComment ? str += shift[--deep]+ar[ix] : str += ar[ix];
+                } else
+                // <elm/> //
+                if(ar[ix].search(/\/>/) > -1 ) {
+                    str = !inComment ? str += shift[deep]+ar[ix] : str += ar[ix];
+                } else
+                // <? xml ... ?> //
+                if(ar[ix].search(/<\?/) > -1) {
+                    str += shift[deep]+ar[ix];
+                } else
+                // xmlns //
+                if( ar[ix].search(/xmlns\:/) > -1  || ar[ix].search(/xmlns\=/) > -1) {
+                    str += shift[deep]+ar[ix];
+                }
 
-                    var padding = '';
-                    for (var i = 0; i < pad; i++) {
-                        padding += '  ';
-                    }
+                else {
+                    str += ar[ix];
+                }
+            }
 
-                    formatted += (padding + node + '\r\n');
-                    pad += indent;
-                });
-
-            return formatted;
-        };
+            return  (str[0] == '\n') ? str.slice(1) : str;
+        }
     });
