@@ -7,7 +7,7 @@ Via [Bower]:
 bower install angular-pretty-xml --save
 ```
 
-Via [npm]
+Via [npm]:
 ```
 npm install angular-pretty-xml --save
 ```
