@@ -1,6 +1,6 @@
 {
   "name": "angular-pretty-xml",
-  "main": "angular-pretty-xml.js",
+  "main": "./src/angular-pretty-xml.js",
   "version": "0.0.3",
   "homepage": "https://github.com/v12/angular-pretty-xml",
   "repository": {
