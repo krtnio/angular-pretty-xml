@@ -1,7 +1,6 @@
 {
   "name": "angular-pretty-xml",
   "main": "./src/angular-pretty-xml.js",
-  "version": "0.1.0",
   "description": "Angular filter that makes XML pretty",
   "homepage": "https://krtnio.github.io/angular-pretty-xml",
   "keywords": [
