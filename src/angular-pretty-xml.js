@@ -1,16 +1,9 @@
 // credits to vkbeautify (https://code.google.com/p/vkbeautify/)
-(function (factory) {
-    if (typeof define === 'function' && define.amd) {
-        return define(['angular'], function (angular) {
-            return factory(angular);
-        });
-    } else if (typeof exports === 'object') {
-        return module.exports = factory(require('angular')).name;
-    } else {
-        return factory(angular);
-    }
-})(function (angular) {
-    function createShiftArr (step) {
+(function(window, angular, undefined) {
+    /*jshint globalstrict:true*/
+    'use strict';
+
+    function createShiftArr(step) {
         var space = '';
         if (isNaN(parseInt(step))) // argument is string
             space = step;
@@ -26,7 +19,7 @@
         return shift;
     }
 
-    function prettify (xml, indent) {
+    function prettify(xml, indent) {
         if (isFinite(indent)) {
             if (indent !== 0)
                 indent = indent || 2;
@@ -81,8 +74,9 @@
         return string.trim();
     }
 
-    return angular.module('prettyXml', [])
-        .filter('prettyXml', function () {
+    angular.module('prettyXml', [])
+        .filter('prettyXml', function() {
             return prettify;
         });
-});
+
+})(window, window.angular);
