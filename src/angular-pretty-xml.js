@@ -59,7 +59,7 @@
                 string += arr[i];
                 inComment = false;
             } else if (/^<\w/.test(arr[i - 1]) && /^<\/\w/.test(arr[i]) && // <elm></elm> //
-                /^<[\w:\-\.,]+/.exec(arr[i - 1]) == /^<\/[\w:\-\.,]+/.exec(arr[i])[0].replace('/', '')) { // fixme WTF?
+                /^<[\w:\-.,]+/.exec(arr[i - 1])[0] === /^<\/[\w:\-.,]+/.exec(arr[i])[0].replace('/', '')) {
                 string += arr[i];
                 if (!inComment) depth--;
             } else if (arr[i].search(/<\w/) !== -1 && arr[i].indexOf('</') === -1 && arr[i].indexOf('/>') === -1) // <elm> //
