@@ -15,6 +15,6 @@ npm install angular-pretty-xml --save
 ## Licence
 [MIT](LICENSE)
 
-[angular-pretty-xml]: http://krtnio.github.io/angular-pretty-xml/
-[Bower]: http://bower.io/
+[angular-pretty-xml]: https://krtnio.github.io/angular-pretty-xml/
+[Bower]: https://bower.io/
 [npm]: https://npmjs.org/
