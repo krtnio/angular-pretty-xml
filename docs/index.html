@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="en">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+  <style>
+    span.nobr { white-space: nowrap; }
+
+    .indent { text-indent: 1.2em; }
+  </style>
+  <title>ng-pretty-xml</title>
+</head>
+<body>
+<a href="https://github.com/krtnio/angular-pretty-xml">
+  <img style="position: absolute; top: 0; right: 0; border: 0;"
+       src="https://camo.githubusercontent.com/a6677b08c955af8400f44c6298f40e7d19cc5b2d/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67"
+       alt="Fork me on GitHub"
+       data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png">
+</a>
+
+<div class="container">
+  <div class="page-header">
+    <h1>
+      <strong>Angular Pretty XML</strong> module
+      <span class="nobr">
+            <img src="https://img.shields.io/npm/v/angular-pretty-xml.svg" alt="npm version"/>
+            <img src="https://img.shields.io/bower/v/angular-pretty-xml.svg" alt="bower version"/>
+            </span>
+    </h1>
+  </div>
+
+  <p class="lead">This example shows an example usage of <code>angular-pretty-xml</code> module</p>
+
+  <p>It takes input XML and outputs <a href="#result">nicely formatted</a> XML</p>
+
+
+  <h2>Live demo</h2>
+
+  <p class="indent">
+    <small>
+      You can modify source XML and filter will be instantly applied thanks to Angular data binding
+    </small>
+  </p>
+
+  <div ng-controller="ExampleController">
+    <div class="row">
+      <div class="col-md-6">
+        <h4>XML</h4>
+        <label for="xml" class="sr-only">XML</label>
+        <textarea id="xml" class="form-control" rows="10" ng-model="xml"></textarea>
+      </div>
+      <div class="col-md-6">
+        <h4>Result</h4>
+        <pre>{{ xml | prettyXml }}</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0/angular.min.js"></script>
+<script src="//cdn.rawgit.com/krtnio/angular-pretty-xml/704022f1/src/angular-pretty-xml.js"></script>
+<script>
+  angular.module('app', ['prettyXml'])
+    .controller('ExampleController', [
+      '$scope',
+      function ($scope) {
+        $scope.xml = '<Test><SomeNumber>000123</SomeNumber><Nested><Elements /></Nested></Test>'
+      }
+    ]);
+</script>
+</body>
+</html>
